@@ -60,4 +60,5 @@ jobs:
           uv run --isolated --no-project --python ${{ matrix.python }}
           --with-editable . --with "matplotlib${{ matrix.matplotlib }}"
           --with pytest --with vl-convert-python --with camminady-altair-theme
+          --with vega-datasets
           python -m pytest
