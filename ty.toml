@@ -1,0 +1,9 @@
+[environment]
+python-version = "3.11"
+
+[src]
+include = [
+    "src",
+    "tests",
+    "create_charts.py",
+]

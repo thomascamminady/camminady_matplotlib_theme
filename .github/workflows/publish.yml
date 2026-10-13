@@ -1,0 +1,47 @@
+name: Publish to PyPI
+
+# Runs when a version tag such as v0.3.0 is pushed. PyPI trusts this workflow
+# through trusted publishing (OIDC), so no API token is stored in the repository.
+# The PyPI publisher is registered for this file name (publish.yml) and the
+# "pypi" environment; renaming either breaks publishing.
+on:
+  push:
+    tags: [ "v*" ]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/camminady-matplotlib-theme/
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+
+      - name: Check that the tag matches the version in pyproject.toml
+        run: |
+          version="$(uv version --short)"
+          if [ "v${version}" != "${GITHUB_REF_NAME}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match version ${version} in pyproject.toml"
+            exit 1
+          fi
+
+      - name: Test
+        run: |
+          uv sync --frozen
+          uv run --frozen pytest
+
+      - name: Build
+        run: uv build --no-sources
+
+      - name: Publish
+        run: uv publish
