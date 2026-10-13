@@ -41,7 +41,39 @@ with plt.style.context("camminady_matplotlib_theme.camminady"):
     fig.savefig("chart.png")
 ```
 
-### Matching the Altair theme
+## Example
+
+A complete script that draws a line chart of stock prices. The data comes
+from [vega_datasets](https://github.com/altair-viz/vega_datasets)
+(`uv add vega_datasets`), which ships it, so the script runs offline.
+
+```python
+import matplotlib.pyplot as plt
+from vega_datasets import data
+
+plt.style.use("camminady_matplotlib_theme.camminady")
+
+stocks = data.stocks()
+fig, ax = plt.subplots()
+for symbol, group in stocks.groupby("symbol"):
+    ax.plot(group["date"], group["price"], label=symbol)
+ax.set(title="Stock prices", xlabel="date", ylabel="Price (USD)")
+ax.legend(title="symbol")
+fig.savefig("stock_prices.png")
+```
+
+![Light style](https://raw.githubusercontent.com/thomascamminady/camminady_matplotlib_theme/main/assets/camminady.png)
+
+With `"camminady_matplotlib_theme.camminady_dark"`:
+
+![Dark style](https://raw.githubusercontent.com/thomascamminady/camminady_matplotlib_theme/main/assets/camminady_dark.png)
+
+The same chart made with Altair and the Altair theme (top) and with this
+style (bottom):
+
+![Altair and matplotlib](https://raw.githubusercontent.com/thomascamminady/camminady_matplotlib_theme/main/assets/comparison.png)
+
+## Matching the Altair theme
 
 The style uses the design tokens of the Altair theme (colours, font sizes and
 the 800 × 400 plot area) and Vega's default colour palette. It sets
@@ -68,7 +100,7 @@ The hook leaves figures alone that use another layout
 Two differences remain: Vega-Lite includes zero in quantitative axes and
 draws points as hollow circles; matplotlib does neither by default.
 
-### Customising
+## Customising
 
 All colours, font sizes and the plot size are fields of `Config`, with the
 same names and defaults as in the Altair theme:
@@ -82,7 +114,7 @@ plt.style.use(rc_params(Config(width=400, height=250)))
 
 `to_mplstyle(rc_params(...))` returns the contents of a `.mplstyle` file.
 
-### Colour-blind safety
+## Colour-blind safety
 
 The default palette is Vega's `tableau10`. Its third (red) and fifth (green)
 colours are nearly indistinguishable for people with deuteranopia, so for five
@@ -93,16 +125,6 @@ from camminady_matplotlib_theme import OKABE_ITO
 
 ax.set_prop_cycle(color=OKABE_ITO)
 ```
-
-## Examples
-
-The same chart made with Altair and with matplotlib:
-
-![Altair and matplotlib](https://raw.githubusercontent.com/thomascamminady/camminady_matplotlib_theme/main/assets/comparison.png)
-
-The dark variant:
-
-![Dark style](https://raw.githubusercontent.com/thomascamminady/camminady_matplotlib_theme/main/assets/camminady_dark.png)
 
 ## Development
 

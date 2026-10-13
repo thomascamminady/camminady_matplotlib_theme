@@ -12,6 +12,7 @@ import sys
 import warnings
 from collections.abc import Iterator
 from importlib.resources import files
+from pathlib import Path
 from typing import Any, Final
 
 import matplotlib as mpl
@@ -99,11 +100,12 @@ def vega_scene(spec: dict[str, Any]) -> list[dict[str, Any]]:
     return items
 
 
-def run_python(code: str) -> str:
+def run_python(code: str, cwd: Path | None = None) -> str:
     """Run ``code`` in a fresh interpreter and return its stdout."""
     result = subprocess.run(  # noqa: S603
         [sys.executable, "-c", code],
         check=True,
+        cwd=cwd,
         capture_output=True,
         text=True,
     )
@@ -474,3 +476,12 @@ def test_savefig(fmt: str, tmp_path: Any) -> None:
     if fmt == "svg":
         # The artist that reserves room for the y title draws nothing.
         assert path.read_text().count("Average power per kilogram") == 1
+
+
+def test_readme_example_runs(tmp_path: Path) -> None:
+    readme = (Path(__file__).parents[1] / "README.md").read_text()
+    section = readme.split("## Example\n", 1)[1]
+    code = re.search(r"```python\n(.*?)```", section, re.DOTALL)
+    assert code is not None
+    run_python(code.group(1), cwd=tmp_path)
+    assert (tmp_path / "stock_prices.png").stat().st_size > 0
