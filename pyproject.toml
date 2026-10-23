@@ -1,6 +1,6 @@
 [project]
 name = "camminady_matplotlib_theme"
-version = "0.1.0"
+version = "0.2.0"
 description = "A minimal matplotlib style that matches camminady_altair_theme: muted gray text, dashed grid lines and horizontal axis titles."
 authors = [
     { name = "Thomas Camminady", email = "0milieux_member@icloud.com" }
