@@ -78,7 +78,8 @@ style (bottom):
 The style uses the design tokens of the Altair theme (colours, font sizes and
 the 800 × 400 plot area) and Vega's default colour palette. It sets
 `figure.dpi` to 72 so that one point is one pixel on screen, as in Vega;
-`savefig` writes at 144 dpi.
+`savefig` writes at 288 dpi (four pixels per point), so saved PNGs stay sharp
+when scaled up. Pass `dpi=` to `savefig` to override it.
 
 Some of the look cannot be expressed in a style file. The style therefore
 registers a figure hook that gives each figure created through pyplot a

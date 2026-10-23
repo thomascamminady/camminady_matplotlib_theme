@@ -167,6 +167,7 @@ def test_context_restores_rcparams() -> None:
         before = mpl.rcParams.copy()
         with plt.style.context("camminady"):
             assert mpl.rcParams["figure.dpi"] == 72
+            assert mpl.rcParams["savefig.dpi"] == 288
         assert mpl.rcParams == before
 
 

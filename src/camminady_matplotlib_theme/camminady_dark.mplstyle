@@ -1,5 +1,5 @@
 figure.dpi: 72
-savefig.dpi: 144
+savefig.dpi: 288
 figure.figsize: 11.777777777777779, 6.5
 figure.facecolor: 1e1e1e
 figure.edgecolor: 1e1e1e

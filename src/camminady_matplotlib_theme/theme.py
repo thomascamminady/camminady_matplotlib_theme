@@ -157,9 +157,10 @@ def rc_params(c: Config) -> dict[str, Any]:
         "minor.visible": False,
     }
     return {
-        # One point is one pixel on screen, as in Vega; save at twice that.
+        # One point is one pixel on screen, as in Vega. Saved files get four pixels per point:
+        # at twice that (144 dpi) PNGs looked blurry once scaled up in documents.
         "figure.dpi": 72,
-        "savefig.dpi": 144,
+        "savefig.dpi": 288,
         "figure.figsize": (
             (c.width + MARGIN_WIDTH) / 72,
             (c.height + MARGIN_HEIGHT) / 72,
